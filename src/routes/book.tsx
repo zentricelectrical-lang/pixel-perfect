@@ -151,7 +151,7 @@ function BookPage() {
               </div>
               <div className="space-y-2">
                 <Label>Service</Label>
-                <Select value={chosenService} onValueChange={setServiceId}>
+                <Select value={chosenService ?? ""} onValueChange={setServiceId}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a service" />
                   </SelectTrigger>

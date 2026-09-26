@@ -243,7 +243,7 @@ function RequestQuotePage() {
                 <div className="space-y-2">
                   <Label>Service</Label>
                   <Select
-                    value={serviceId || undefined}
+                    value={serviceId}
                     onValueChange={(value) => set({ service_id: value })}
                   >
                     <SelectTrigger>
@@ -284,7 +284,7 @@ function RequestQuotePage() {
                 </div>
                 <div className="space-y-2">
                   <Label>Property type</Label>
-                  <Select value={form.property_type || undefined} onValueChange={(v) => set({ property_type: v })}>
+                  <Select value={form.property_type} onValueChange={(v) => set({ property_type: v })}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select property type" />
                     </SelectTrigger>

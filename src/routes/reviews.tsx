@@ -144,7 +144,7 @@ function ReviewsPage() {
             </div>
             <div className="space-y-2">
               <Label>Service</Label>
-              <Select value={serviceId} onValueChange={setServiceId}>
+              <Select value={serviceId ?? ""} onValueChange={setServiceId}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a service (optional)" />
                 </SelectTrigger>
