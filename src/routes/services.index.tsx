@@ -5,7 +5,7 @@ import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { servicesQuery } from "@/lib/site-data";
 
-export const Route = createFileRoute("/services")({
+export const Route = createFileRoute("/services/")({
   head: () => ({
     meta: [
       { title: "Electrical Services in Nairobi | Zentric Electrical Services" },
