@@ -1,24 +1,261 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import {
+  ShieldCheck,
+  FileCheck2,
+  MessagesSquare,
+  Wrench,
+  PackageCheck,
+  LifeBuoy,
+  BadgeCheck,
+  MessageCircle,
+  Phone,
+  ArrowRight,
+  Star,
+} from "lucide-react";
+import { SiteLayout } from "@/components/site/SiteLayout";
+import { Button } from "@/components/ui/button";
+import {
+  settingsQuery,
+  servicesQuery,
+  approvedReviewsQuery,
+  whatsappLink,
+  telLink,
+  DEFAULT_WHATSAPP_MESSAGE,
+} from "@/lib/site-data";
+import heroImage from "@/assets/hero-electrician.jpg";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Zentric Electrical Services | Electricians in Nairobi & Kiambu" },
+      {
+        name: "description",
+        content:
+          "Zentric Electrical Services provides professional electrical installation, repairs, fault finding, solar, automation and commercial electrical work in Nairobi and surrounding areas.",
+      },
+      { property: "og:title", content: "Zentric Electrical Services" },
+      {
+        property: "og:description",
+        content:
+          "Professional Electrical Solutions. Done Right. Installation, repairs, solar and automation across Nairobi, Kiambu, Thika and Ruiru.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const WHY = [
+  { icon: BadgeCheck, title: "Professional workmanship", text: "Work carried out to a standard we are willing to put our name on." },
+  { icon: ShieldCheck, title: "Safety-focused installations", text: "Correct ratings, proper earthing and testing before handover." },
+  { icon: FileCheck2, title: "Transparent quotations", text: "Itemised quotes so you can see materials, labour and transport." },
+  { icon: MessagesSquare, title: "Reliable communication", text: "You know who is coming, when, and what happens next." },
+  { icon: PackageCheck, title: "Quality materials", text: "We specify materials that will not become tomorrow's fault." },
+  { icon: LifeBuoy, title: "After-service support", text: "Job reports, documentation and follow-up after completion." },
+];
+
+const STEPS = [
+  { n: "01", title: "Tell us what you need", text: "Send your request by form, call or WhatsApp with your location and the problem." },
+  { n: "02", title: "Site assessment / diagnosis", text: "We assess the site or diagnose the fault so the scope is accurate." },
+  { n: "03", title: "Receive your quote", text: "An itemised quotation with materials, labour and transport, valid for a set period." },
+  { n: "04", title: "We complete the job", text: "Scheduled, executed, tested and handed over with proper documentation." },
+];
+
+function Home() {
+  const { data: settings } = useQuery(settingsQuery);
+  const { data: services } = useQuery(servicesQuery);
+  const { data: reviews } = useQuery(approvedReviewsQuery);
+  const wa = whatsappLink(settings?.whatsapp ?? settings?.phone, DEFAULT_WHATSAPP_MESSAGE);
+  const tel = telLink(settings?.phone);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <SiteLayout>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border">
+        <img
+          src={heroImage}
+          alt="Zentric electrician working on a distribution board"
+          width={1600}
+          height={1104}
+          className="absolute inset-0 h-full w-full object-cover opacity-30"
+        />
+        <div className="absolute inset-0 bg-background/70" />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
+          <p className="eyebrow mb-3">Zentric Electrical Services</p>
+          <h1 className="max-w-3xl text-4xl font-semibold uppercase leading-tight sm:text-5xl lg:text-6xl">
+            Professional Electrical Solutions. Done Right.
+          </h1>
+          <p className="mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
+            Reliable electrical installation, repairs, fault finding, solar, automation, water pump
+            control and commercial electrical work — carried out safely, documented properly and
+            quoted transparently.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button asChild variant="hero" size="lg">
+              <Link to="/request-quote">Request a quote</Link>
+            </Button>
+            {wa ? (
+              <Button asChild variant="gold" size="lg">
+                <a href={wa} target="_blank" rel="noreferrer">
+                  <MessageCircle /> WhatsApp us
+                </a>
+              </Button>
+            ) : null}
+            {tel ? (
+              <Button asChild variant="heroOutline" size="lg">
+                <a href={tel}>
+                  <Phone /> Call now
+                </a>
+              </Button>
+            ) : (
+              <Button asChild variant="heroOutline" size="lg">
+                <Link to="/contact">Contact us</Link>
+              </Button>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="section">
+        <div className="mx-auto max-w-6xl px-4">
+          <p className="eyebrow mb-2">What we do</p>
+          <h2 className="text-2xl font-semibold uppercase sm:text-3xl">Our electrical services</h2>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {(services ?? []).map((service) => (
+              <Link
+                key={service.id}
+                to="/services/$slug"
+                params={{ slug: service.slug }}
+                className="group flex flex-col justify-between rounded-md border border-border bg-card p-5 transition-colors hover:border-primary"
+              >
+                <div>
+                  <Wrench className="mb-3 h-5 w-5 text-primary" />
+                  <h3 className="text-lg font-semibold">{service.name}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{service.short_description}</p>
+                </div>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                  View service <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </Link>
+            ))}
+            {services && services.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Services are being updated.</p>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Zentric */}
+      <section className="section border-y border-border bg-surface">
+        <div className="mx-auto max-w-6xl px-4">
+          <p className="eyebrow mb-2">Why Zentric</p>
+          <h2 className="text-2xl font-semibold uppercase sm:text-3xl">
+            Work you can rely on, documented properly
+          </h2>
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {WHY.map((item) => (
+              <div key={item.title} className="flex gap-3">
+                <item.icon className="mt-0.5 h-5 w-5 shrink-0 text-gold" />
+                <div>
+                  <h3 className="text-base font-semibold">{item.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{item.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="section">
+        <div className="mx-auto max-w-6xl px-4">
+          <p className="eyebrow mb-2">How it works</p>
+          <h2 className="text-2xl font-semibold uppercase sm:text-3xl">Four clear steps</h2>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {STEPS.map((step) => (
+              <div key={step.n} className="rounded-md border border-border bg-card p-5">
+                <span className="font-display text-2xl text-primary">{step.n}</span>
+                <h3 className="mt-2 text-base font-semibold">{step.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{step.text}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button asChild size="lg">
+              <Link to="/request-quote">Start your request</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link to="/book">Book a site visit</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews */}
+      {reviews && reviews.length > 0 ? (
+        <section className="section border-t border-border bg-surface">
+          <div className="mx-auto max-w-6xl px-4">
+            <p className="eyebrow mb-2">Customer feedback</p>
+            <h2 className="text-2xl font-semibold uppercase sm:text-3xl">What customers say</h2>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {reviews.slice(0, 3).map((review) => (
+                <figure key={review.id} className="rounded-md border border-border bg-card p-5">
+                  <div className="flex gap-1">
+                    {Array.from({ length: review.rating }).map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-gold text-gold" />
+                    ))}
+                  </div>
+                  <blockquote className="mt-3 text-sm text-muted-foreground">{review.body}</blockquote>
+                  <figcaption className="mt-3 text-sm font-medium">
+                    {review.author_name}
+                    {review.is_demo ? (
+                      <span className="ml-2 rounded-sm bg-secondary px-1.5 py-0.5 text-[0.65rem] uppercase text-muted-foreground">
+                        Demo data
+                      </span>
+                    ) : null}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <Button asChild variant="link" className="mt-4 px-0">
+              <Link to="/reviews">Read all reviews</Link>
+            </Button>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Emergency CTA */}
+      <section className="section">
+        <div className="mx-auto max-w-6xl px-4">
+          <div className="rounded-md border border-gold/40 bg-card p-6 sm:p-8">
+            <h2 className="text-xl font-semibold uppercase sm:text-2xl">
+              {settings?.emergency_message ?? "Electrical emergency? Get in touch now."}
+            </h2>
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+              {tel ? (
+                <Button asChild size="lg">
+                  <a href={tel}>
+                    <Phone /> Call Zentric
+                  </a>
+                </Button>
+              ) : null}
+              {wa ? (
+                <Button asChild variant="gold" size="lg">
+                  <a href={wa} target="_blank" rel="noreferrer">
+                    <MessageCircle /> WhatsApp
+                  </a>
+                </Button>
+              ) : null}
+              <Button asChild variant="outline" size="lg">
+                <Link to="/contact">Contact options</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </SiteLayout>
   );
 }
