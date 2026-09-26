@@ -17,9 +17,9 @@ export function PageHeader({
   title,
   description,
 }: {
-  eyebrow?: string;
+  eyebrow?: string | undefined;
   title: string;
-  description?: string;
+  description?: string | undefined;
 }) {
   return (
     <section className="border-b border-border bg-surface">
