@@ -1,0 +1,10 @@
+REVOKE INSERT ON public.enquiries FROM anon, authenticated;
+REVOKE INSERT ON public.bookings FROM anon, authenticated;
+REVOKE INSERT ON public.notifications FROM anon, authenticated;
+DROP POLICY IF EXISTS enquiries_public_insert ON public.enquiries;
+DROP POLICY IF EXISTS bookings_public_insert ON public.bookings;
+DROP POLICY IF EXISTS notifications_insert ON public.notifications;
+CREATE POLICY enquiries_staff_insert ON public.enquiries FOR INSERT TO authenticated WITH CHECK (public.is_staff(auth.uid()));
+CREATE POLICY bookings_staff_insert ON public.bookings FOR INSERT TO authenticated WITH CHECK (public.is_staff(auth.uid()));
+CREATE POLICY notifications_staff_insert ON public.notifications FOR INSERT TO authenticated WITH CHECK (public.is_staff(auth.uid()));
+GRANT INSERT ON public.enquiries, public.bookings, public.notifications TO authenticated;
