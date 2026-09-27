@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep customer, admin, and technician dashboards in separate role-gated routes and query through the signed-in browser client; RLS remains the authoritative data boundary.
+- Use a shared DashboardShell for the reference-style navigation and stat panels so dashboard layouts stay consistent.

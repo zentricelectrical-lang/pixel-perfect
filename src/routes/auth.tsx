@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { SiteLayout, PageHeader } from "@/components/site/SiteLayout";
@@ -47,7 +47,7 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        toast.success("Account created. You are signed in.");
+        toast.success("Account created. Check your email to confirm your account if prompted.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
@@ -56,7 +56,7 @@ function AuthPage() {
         if (error) throw error;
         toast.success("Welcome back.");
       }
-      void navigate({ to: "/" });
+      void navigate({ to: "/dashboard" });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Authentication failed.");
     } finally {
@@ -104,16 +104,18 @@ function AuthPage() {
             <Button type="submit" className="w-full" disabled={busy}>
               {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
             </Button>
-            <button
+            <Button
               type="button"
-              className="w-full text-sm text-muted-foreground underline"
+              variant="link"
+              className="w-full"
               onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
             >
               {mode === "signin"
                 ? "New customer? Create an account"
                 : "Already have an account? Sign in"}
-            </button>
+            </Button>
           </form>
+          <div className="mt-5 text-center"><Button asChild variant="outline"><Link to="/dashboard">My dashboard</Link></Button></div>
         </div>
       </section>
     </SiteLayout>

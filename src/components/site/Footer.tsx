@@ -74,6 +74,7 @@ export function Footer() {
                 Customer login
               </Link>
             </li>
+            <li><Link to="/dashboard" className="hover:text-foreground">My dashboard</Link></li>
           </ul>
         </div>
 

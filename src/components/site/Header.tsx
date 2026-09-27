@@ -127,8 +127,11 @@ export function Header() {
                   </Button>
                 ) : null}
                 <Button asChild variant="ghost" onClick={() => setOpen(false)}>
-                  <Link to="/auth">Customer login</Link>
+                   <Link to="/auth">Customer login</Link>
                 </Button>
+                 <Button asChild variant="ghost" onClick={() => setOpen(false)}>
+                   <Link to="/dashboard">My dashboard</Link>
+                 </Button>
               </div>
             </SheetContent>
           </Sheet>

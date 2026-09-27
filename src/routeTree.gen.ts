@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -19,6 +20,7 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RequestQuoteRouteImport } from './routes/request-quote'
 import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as TechnicianRouteImport } from './routes/technician'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
@@ -33,6 +35,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -75,6 +82,11 @@ const ReviewsRoute = ReviewsRouteImport.update({
   path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TechnicianRoute = TechnicianRouteImport.update({
+  id: '/technician',
+  path: '/technician',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -104,6 +116,7 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
@@ -112,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/reviews': typeof ReviewsRoute
+  '/technician': typeof TechnicianRoute
   '/terms': typeof TermsRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -121,6 +135,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
@@ -129,6 +144,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/reviews': typeof ReviewsRoute
+  '/technician': typeof TechnicianRoute
   '/terms': typeof TermsRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -139,6 +155,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/book': typeof BookRoute
   '/contact': typeof ContactRoute
@@ -147,6 +164,7 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
   '/reviews': typeof ReviewsRoute
+  '/technician': typeof TechnicianRoute
   '/terms': typeof TermsRoute
   '/projects/$slug': typeof ProjectsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -158,6 +176,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/book'
     | '/contact'
@@ -166,6 +185,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/request-quote'
     | '/reviews'
+    | '/technician'
     | '/terms'
     | '/projects/$slug'
     | '/services/$slug'
@@ -175,6 +195,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/book'
     | '/contact'
@@ -183,6 +204,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/request-quote'
     | '/reviews'
+    | '/technician'
     | '/terms'
     | '/projects/$slug'
     | '/services/$slug'
@@ -192,6 +214,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/auth'
     | '/book'
     | '/contact'
@@ -200,6 +223,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/request-quote'
     | '/reviews'
+    | '/technician'
     | '/terms'
     | '/projects/$slug'
     | '/services/$slug'
@@ -210,6 +234,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   BookRoute: typeof BookRoute
   ContactRoute: typeof ContactRoute
@@ -218,6 +243,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
   ReviewsRoute: typeof ReviewsRoute
+  TechnicianRoute: typeof TechnicianRoute
   TermsRoute: typeof TermsRoute
   ProjectsSlugRoute: typeof ProjectsSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
@@ -239,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -297,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/technician': {
+      id: '/technician'
+      path: '/technician'
+      fullPath: '/technician'
+      preLoaderRoute: typeof TechnicianRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -338,6 +378,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   BookRoute: BookRoute,
   ContactRoute: ContactRoute,
@@ -346,6 +387,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RequestQuoteRoute: RequestQuoteRoute,
   ReviewsRoute: ReviewsRoute,
+  TechnicianRoute: TechnicianRoute,
   TermsRoute: TermsRoute,
   ProjectsSlugRoute: ProjectsSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,
