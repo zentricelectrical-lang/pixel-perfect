@@ -12,6 +12,11 @@ import {
   Phone,
   ArrowRight,
   Star,
+  Zap,
+  Sun,
+  House,
+  Droplets,
+  Building2,
 } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
@@ -23,7 +28,7 @@ import {
   telLink,
   DEFAULT_WHATSAPP_MESSAGE,
 } from "@/lib/site-data";
-import heroImage from "@/assets/hero-electrician.jpg";
+import heroImage from "@/assets/hero-reference.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -63,6 +68,8 @@ const STEPS = [
   { n: "04", title: "We complete the job", text: "Scheduled, executed, tested and handed over with proper documentation." },
 ];
 
+const serviceIcons = [Zap, Wrench, Sun, House, Droplets, Building2];
+
 function Home() {
   const { data: settings } = useQuery(settingsQuery);
   const { data: services } = useQuery(servicesQuery);
@@ -73,40 +80,40 @@ function Home() {
   return (
     <SiteLayout>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border">
+      <section className="site-dark relative min-h-[560px] overflow-hidden bg-background text-foreground sm:min-h-[600px]">
         <img
           src={heroImage}
           alt="Zentric electrician working on a distribution board"
           width={1600}
           height={1104}
-          className="absolute inset-0 h-full w-full object-cover opacity-30"
+          className="absolute inset-0 h-full w-full object-cover object-[64%_center]"
         />
-        <div className="absolute inset-0 bg-background/70" />
-        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
-          <p className="eyebrow mb-3">Zentric Electrical Services</p>
-          <h1 className="max-w-3xl text-4xl font-semibold uppercase leading-tight sm:text-5xl lg:text-6xl">
-            Professional Electrical Solutions. Done Right.
+        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/95 to-navy/5" />
+        <div className="relative mx-auto max-w-6xl px-4 py-24 sm:py-32">
+          <h1 className="max-w-2xl text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">
+            Zentric<br />Electrical Services
           </h1>
-          <p className="mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
+          <p className="mt-4 text-lg font-medium sm:text-2xl">Professional Electrical Solutions. <span className="font-bold text-gold">Done Right.</span></p>
+          <p className="mt-7 max-w-xl text-base leading-relaxed text-navy-foreground/85 sm:text-lg">
             Reliable electrical installation, repairs, fault finding, solar, automation, water pump
             control and commercial electrical work — carried out safely, documented properly and
             quoted transparently.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button asChild variant="hero" size="lg">
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button asChild variant="gold" size="lg">
               <Link to="/request-quote">Request a quote</Link>
             </Button>
             {wa ? (
-              <Button asChild variant="gold" size="lg">
+               <Button asChild variant="whatsapp" size="lg">
                 <a href={wa} target="_blank" rel="noreferrer">
-                  <MessageCircle /> WhatsApp us
+                   <MessageCircle /> WhatsApp us
                 </a>
               </Button>
             ) : null}
             {tel ? (
-              <Button asChild variant="heroOutline" size="lg">
+               <Button asChild variant="heroOutline" size="lg">
                 <a href={tel}>
-                  <Phone /> Call now
+                   <Phone /> Call Zentric
                 </a>
               </Button>
             ) : (
@@ -119,28 +126,23 @@ function Home() {
       </section>
 
       {/* Services */}
-      <section className="section">
+      <section className="border-b border-border bg-background py-8 sm:py-10">
         <div className="mx-auto max-w-6xl px-4">
-          <p className="eyebrow mb-2">What we do</p>
-          <h2 className="text-2xl font-semibold uppercase sm:text-3xl">Our electrical services</h2>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {(services ?? []).map((service) => (
+          <h2 className="sr-only">Our electrical services</h2>
+          <div className="grid grid-cols-2 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
+            {(services ?? []).slice(0, 6).map((service, index) => {
+              const Icon = serviceIcons[index] ?? Zap;
+              return (
               <Link
                 key={service.id}
                 to="/services/$slug"
                 params={{ slug: service.slug }}
-                className="group flex flex-col justify-between rounded-md border border-border bg-card p-5 transition-colors hover:border-primary"
+                className="group flex min-h-32 flex-col items-center justify-center border-r border-border px-3 text-center last:border-r-0 hover:text-primary"
               >
-                <div>
-                  <Wrench className="mb-3 h-5 w-5 text-primary" />
-                  <h3 className="text-lg font-semibold">{service.name}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{service.short_description}</p>
-                </div>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                  View service <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </span>
+                <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface text-primary"><Icon className="h-7 w-7" /></span>
+                <h3 className="text-base font-semibold leading-tight">{service.name}</h3>
               </Link>
-            ))}
+            )})}
             {services && services.length === 0 ? (
               <p className="text-sm text-muted-foreground">Services are being updated.</p>
             ) : null}
