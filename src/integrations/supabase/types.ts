@@ -1419,6 +1419,8 @@ export type Database = {
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       next_doc_number: { Args: { _prefix: string }; Returns: string }
+      submit_booking: { Args: { p_details: Json }; Returns: string }
+      submit_enquiry: { Args: { p_details: Json }; Returns: string }
     }
     Enums: {
       app_role: "owner" | "admin" | "technician" | "customer"

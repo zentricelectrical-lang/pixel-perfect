@@ -1,18 +1,18 @@
 # Zentric Electrical Services — build roadmap
 
 ## Phase 1 — Brand + public website
-- [ ] Design system (navy/cyan/gold) in src/styles.css
-- [ ] Header/footer, mobile nav, WhatsApp + call CTAs from settings
-- [ ] /, /services, /services/$slug, /projects, /projects/$slug, /about, /reviews, /contact, /faq, /privacy, /terms
-- [ ] /request-quote multi-step form, /book booking form
+- [x] Design system (navy/cyan/gold) in src/styles.css
+- [x] Header/footer, mobile nav, WhatsApp + call CTAs from settings
+- [x] /, /services, /services/$slug, /projects, /projects/$slug, /about, /reviews, /contact, /faq, /privacy, /terms
+- [x] /request-quote reference-style form, /book booking form
 
 ## Phase 2 — Backend + auth + customer portal
-- [ ] Database schema + RLS + seed settings/services/areas/FAQs
+- [x] Database schema + RLS + seed settings/services/areas/FAQs
 - [ ] Auth (email/password + Google), roles owner/admin/technician/customer
-- [ ] Customer dashboard: jobs, quotes, invoices, payments, documents, reviews
+- [x] Customer dashboard: read-only overview of requests, visits, jobs, quotes, invoices, payments, documents, reviews
 
 ## Phase 3 — Admin dashboard
-- [ ] Overview stats, enquiries, bookings, customers CRM
+- [x] Read-only overview stats, enquiries, bookings, customers; management actions remain open
 
 ## Phase 4 — Jobs + technicians
 - [ ] Job management, assignment, technician dashboard, completion flow
@@ -29,3 +29,4 @@
 
 ## Blocked / needs owner input
 - [ ] Real phone number, WhatsApp number, email, physical address, service areas
+- [ ] Admin and customer management actions, technician completion, documents, payments: implementation pending

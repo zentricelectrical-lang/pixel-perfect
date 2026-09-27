@@ -1,0 +1,52 @@
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, type ReactNode } from "react";
+import { LayoutDashboard, FileText, CalendarDays, BriefcaseBusiness, Receipt, CreditCard, FolderOpen, Star, UserRound, Users, ClipboardList, Wrench, Settings, LogOut, Menu, Bell, FolderKanban } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Logo } from "@/components/site/Header";
+
+type Area = "customer" | "admin" | "technician";
+const items = {
+  customer: [
+    ["My Requests", "requests", ClipboardList], ["My Site Visits", "visits", CalendarDays], ["My Quotations", "quotations", FileText], ["My Jobs", "jobs", BriefcaseBusiness], ["My Invoices", "invoices", Receipt], ["My Payments", "payments", CreditCard], ["My Receipts", "receipts", FileText], ["My Documents", "documents", FolderOpen], ["My Reviews", "reviews", Star], ["Profile", "profile", UserRound],
+  ],
+  admin: [
+    ["Dashboard", "overview", LayoutDashboard], ["Customers", "customers", Users], ["Enquiries", "enquiries", ClipboardList], ["Bookings", "bookings", CalendarDays], ["Quotes", "quotes", FileText], ["Jobs", "jobs", BriefcaseBusiness], ["Invoices", "invoices", Receipt], ["Payments", "payments", CreditCard], ["Receipts", "receipts", FileText], ["Technicians", "technicians", Wrench], ["Projects", "projects", FolderKanban], ["Services", "services", Wrench], ["Reviews", "reviews", Star], ["Documents", "documents", FolderOpen], ["Notifications", "notifications", Bell], ["Website Content", "content", FileText], ["Settings", "settings", Settings],
+  ],
+  technician: [["My Jobs", "jobs", BriefcaseBusiness], ["Site Visits", "visits", CalendarDays], ["Profile", "profile", UserRound]],
+} as const;
+
+export function useDashboardAccess(area: Area) {
+  return useQuery({ queryKey: ["dashboard-access", area], queryFn: async () => {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error || !user) return { allowed: false, signedIn: false, user: null };
+    const { data: roles, error: roleError } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+    if (roleError) throw roleError;
+    const roleNames = roles?.map((r) => r.role) ?? [];
+    const allowed = area === "admin" ? roleNames.some((r) => r === "owner" || r === "admin") : area === "technician" ? roleNames.includes("technician") : roleNames.includes("customer") || roleNames.some((r) => r === "owner" || r === "admin");
+    return { allowed, signedIn: true, user };
+  }, staleTime: 30_000 });
+}
+
+export function DashboardShell({ area, active, children }: { area: Area; active: string; children: ReactNode }) {
+  const navigate = useNavigate();
+  const access = useDashboardAccess(area);
+  useEffect(() => { if (access.data && !access.data.signedIn) void navigate({ to: "/auth" }); }, [access.data, navigate]);
+  if (access.isLoading) return <div className="flex min-h-screen items-center justify-center text-muted-foreground">Loading your account…</div>;
+  if (access.isError) return <div className="mx-auto max-w-xl p-10 text-destructive">Your account could not be loaded. Please try again.</div>;
+  if (!access.data?.signedIn) return null;
+  if (!access.data.allowed) return <div className="mx-auto max-w-xl space-y-4 p-10"><h1 className="text-2xl font-semibold">Access unavailable</h1><p className="text-muted-foreground">This account does not have access to this workspace.</p><Button asChild><Link to="/">Return home</Link></Button></div>;
+  const menu = <nav className="flex flex-col gap-0.5">{items[area].map(([label, key, Icon]) => <a key={key} href={`#${key}`} className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors hover:bg-secondary ${active === key ? "bg-secondary font-semibold text-primary" : "text-muted-foreground"}`}><Icon className="h-4 w-4 shrink-0" />{label}</a>)}</nav>;
+  return <div className="min-h-screen bg-background text-foreground">
+    <header className="site-dark sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border bg-background px-4 lg:hidden"><Logo /><Sheet><SheetTrigger asChild><Button variant="outline" size="icon" aria-label="Open dashboard menu"><Menu /></Button></SheetTrigger><SheetContent side="left" className="w-72 overflow-y-auto bg-background pt-8">{menu}<div className="mt-6 border-t border-border pt-4"><Button variant="ghost" className="w-full justify-start gap-3" onClick={async () => { await supabase.auth.signOut(); void navigate({ to: "/auth" }); }}><LogOut className="h-4 w-4" />Sign out</Button><Button asChild variant="ghost"><Link to="/">Back to website</Link></Button></div></SheetContent></Sheet></header>
+    <div className="mx-auto flex max-w-[1600px]"><aside className="site-dark sticky top-0 hidden h-screen w-60 shrink-0 overflow-y-auto border-r border-border bg-background px-4 py-5 text-foreground lg:block"><Logo /><div className="mt-8">{menu}</div><div className="mt-6 border-t border-border pt-4"><Button variant="ghost" className="w-full justify-start gap-3" onClick={async () => { await supabase.auth.signOut(); void navigate({ to: "/auth" }); }}><LogOut className="h-4 w-4" /> Sign out</Button><Button asChild variant="ghost" className="w-full justify-start"><Link to="/">Back to website</Link></Button></div></aside><main className="min-w-0 flex-1 px-4 py-8 sm:px-8 lg:px-10">{children}</main></div>
+  </div>;
+}
+
+export function Stat({ label, value, icon: Icon, tone = "primary" }: { label: string; value: string | number; icon: typeof LayoutDashboard; tone?: "primary" | "gold" | "whatsapp" }) { return <div className="rounded-md border border-border bg-card p-5 shadow-sm"><div className="flex items-center justify-between"><span className="text-sm text-muted-foreground">{label}</span><Icon className={`h-5 w-5 ${tone === "gold" ? "text-gold" : tone === "whatsapp" ? "text-whatsapp" : "text-primary"}`} /></div><p className="mt-3 text-3xl font-bold">{value}</p></div>; }
+export function Panel({ title, children, id }: { title: string; children: ReactNode; id?: string }) { return <section id={id} className="scroll-mt-20 border-t border-border py-7"><h2 className="mb-4 text-xl font-bold">{title}</h2>{children}</section>; }
+export function Empty({ text }: { text: string }) { return <p className="rounded-md border border-dashed border-border p-5 text-sm text-muted-foreground">{text}</p>; }
+export const money = (value: number | string | null) => `KSh ${Number(value ?? 0).toLocaleString("en-KE")}`;
+export const day = (value: string) => new Date(value).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" });
