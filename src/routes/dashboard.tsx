@@ -19,7 +19,7 @@ function CustomerDashboard() {
       supabase.from("payments").select("id,reference,status,amount,created_at").order("created_at", { ascending: false }),
       supabase.from("receipts").select("id,reference,amount,issued_at").order("issued_at", { ascending: false }),
       supabase.from("documents").select("id,title,doc_type,created_at,file_url").order("created_at", { ascending: false }),
-      supabase.from("reviews").select("id,rating,status,created_at").order("created_at", { ascending: false }),
+      supabase.from("reviews").select("id,rating,status,created_at").eq("customer_id", (await supabase.from("customers").select("id").eq("profile_id", access.data?.user?.id ?? "").maybeSingle()).data?.id ?? "00000000-0000-0000-0000-000000000000").order("created_at", { ascending: false }),
       supabase.from("profiles").select("full_name,email,phone,whatsapp").eq("id", access.data?.user?.id ?? "").maybeSingle(),
     ]);
     const failure = queries.find((q) => q.error);
