@@ -131,7 +131,7 @@ function Home() {
           <h2 className="sr-only">Our electrical services</h2>
           <div className="grid grid-cols-2 gap-y-8 sm:grid-cols-3 lg:grid-cols-6">
             {(services ?? []).slice(0, 6).map((service, index) => {
-              const Icon = serviceIcons[index] ?? Zap;
+              const Icon = ({ "electrical-installation": Zap, "electrical-repairs": Wrench, "solar-solutions": Sun, "smart-home-automation": House, "water-pump-automation": Droplets, "security-systems": ShieldCheck, "commercial-electrical": Building2 } as Record<string, typeof Zap>)[service.slug] ?? serviceIcons[index] ?? Zap;
               return (
               <Link
                 key={service.id}

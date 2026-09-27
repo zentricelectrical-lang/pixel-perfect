@@ -15,8 +15,6 @@ const serviceImages: Record<string, string> = {
   "electrical-repairs": repairsImage,
   "solar-solutions": solarImage,
   "smart-home-automation": automationImage,
-  "water-pump-automation": commercialImage,
-  "security-systems": automationImage,
   "commercial-electrical": commercialImage,
 };
 
@@ -64,7 +62,7 @@ function ServicesPage() {
                 >
                   {serviceImages[service.slug] ? (
                     <img src={serviceImages[service.slug]} alt={service.name} loading="lazy" width={1200} height={800} className="aspect-[1.8] w-full object-cover" />
-                  ) : <div className="aspect-[1.8] bg-surface" />}
+                  ) : <div className="flex aspect-[1.8] items-center justify-center bg-surface"><span className="text-sm font-medium text-muted-foreground">{service.name}</span></div>}
                   <div className="flex flex-1 flex-col p-5">
                     <h2 className="text-xl font-semibold">{service.name}</h2>
                     <p className="mt-2 text-sm text-muted-foreground">{service.short_description}</p>
