@@ -4,7 +4,7 @@ import { Footer } from "./Footer";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
@@ -22,10 +22,10 @@ export function PageHeader({
   description?: string | undefined;
 }) {
   return (
-    <section className="border-b border-border bg-surface">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+    <section className="bg-background">
+      <div className="mx-auto max-w-6xl px-4 pb-5 pt-12 sm:pt-16">
         {eyebrow ? <p className="eyebrow mb-2">{eyebrow}</p> : null}
-        <h1 className="text-3xl font-semibold uppercase sm:text-4xl">{title}</h1>
+        <h1 className="text-3xl font-bold sm:text-4xl">{title}</h1>
         {description ? (
           <p className="mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">{description}</p>
         ) : null}

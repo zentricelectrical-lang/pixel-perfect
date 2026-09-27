@@ -23,14 +23,14 @@ const NAV = [
 export function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2">
-      <span className="flex h-9 w-9 items-center justify-center rounded-sm bg-primary text-primary-foreground">
-        <Zap className="h-5 w-5" />
+      <span className="flex h-9 w-9 items-center justify-center text-gold">
+        <Zap className="h-8 w-8 fill-gold" />
       </span>
       <span className="leading-none">
-        <span className="block font-display text-lg font-semibold uppercase tracking-widest">
+        <span className="block font-display text-2xl font-semibold">
           Zentric
         </span>
-        <span className="block text-[0.6rem] uppercase tracking-[0.22em] text-muted-foreground">
+        <span className="block text-[0.58rem] font-semibold text-foreground">
           Electrical Services
         </span>
       </span>
@@ -45,7 +45,7 @@ export function Header() {
   const tel = telLink(settings?.phone);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
+    <header className="site-dark sticky top-0 z-50 border-b border-border bg-background text-foreground">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
         <Logo />
 
@@ -71,7 +71,7 @@ export function Header() {
               </a>
             </Button>
           ) : null}
-          <Button asChild size="sm">
+           <Button asChild variant="gold" size="sm">
             <Link to="/request-quote">Get a Quote</Link>
           </Button>
         </div>

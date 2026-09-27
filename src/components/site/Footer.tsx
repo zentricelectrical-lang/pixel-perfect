@@ -10,7 +10,7 @@ export function Footer() {
   const { data: services } = useQuery(servicesQuery);
 
   return (
-    <footer className="border-t border-border bg-surface">
+    <footer className="site-dark border-t border-border bg-background text-foreground">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div className="space-y-4">
           <Logo />
