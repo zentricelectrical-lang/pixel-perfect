@@ -70,10 +70,7 @@ function BookPage() {
     }
     setSubmitting(true);
     try {
-      const { data: session } = await supabase.auth.getSession();
-      const { data, error } = await supabase
-        .from("bookings")
-        .insert({
+       const { data, error } = await supabase.rpc("submit_booking", { p_details: {
           full_name: fullName.trim(),
           phone: phone.trim(),
           whatsapp: whatsapp.trim() || null,
@@ -83,20 +80,9 @@ function BookPage() {
           scheduled_date: date,
           scheduled_time: time,
           description: description.trim() || null,
-          created_by: session.session?.user.id ?? null,
-        })
-        .select("reference")
-        .single();
+         } });
       if (error) throw error;
-
-      await supabase.from("notifications").insert({
-        audience: "staff",
-        title: "New booking request",
-        body: `${fullName} — ${date} ${time} (${data.reference})`,
-        link: "/admin/bookings",
-      });
-
-      setReference(data.reference);
+       setReference(data);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not create the booking.");
     } finally {

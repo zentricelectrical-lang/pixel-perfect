@@ -133,10 +133,7 @@ function RequestQuotePage() {
         attachments.push({ path, name: file.name, type: file.type, size: file.size });
       }
 
-      const { data: session } = await supabase.auth.getSession();
-      const { data, error } = await supabase
-        .from("enquiries")
-        .insert({
+       const { data, error } = await supabase.rpc("submit_enquiry", { p_details: {
           full_name: form.full_name.trim(),
           phone: form.phone.trim(),
           whatsapp: form.whatsapp.trim() || null,
@@ -150,20 +147,9 @@ function RequestQuotePage() {
           preferred_time: form.preferred_time || null,
           urgency: form.urgency,
           attachments,
-          created_by: session.session?.user.id ?? null,
-        })
-        .select("reference")
-        .single();
+         } });
       if (error) throw error;
-
-      await supabase.from("notifications").insert({
-        audience: "staff",
-        title: "New quote request",
-        body: `${form.full_name} — ${form.location} (${data.reference})`,
-        link: "/admin/enquiries",
-      });
-
-      setReference(data.reference);
+       setReference(data);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not send your request.");
     } finally {
