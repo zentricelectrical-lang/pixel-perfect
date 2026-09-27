@@ -1,0 +1,12 @@
+CREATE SCHEMA IF NOT EXISTS private;
+GRANT USAGE ON SCHEMA private TO anon, authenticated;
+ALTER FUNCTION public.submit_enquiry(jsonb) SET SCHEMA private;
+ALTER FUNCTION public.submit_booking(jsonb) SET SCHEMA private;
+GRANT EXECUTE ON FUNCTION private.submit_enquiry(jsonb) TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION private.submit_booking(jsonb) TO anon, authenticated;
+CREATE FUNCTION public.submit_enquiry(p_details jsonb) RETURNS text LANGUAGE sql SECURITY INVOKER SET search_path = public AS $$ SELECT private.submit_enquiry(p_details); $$;
+CREATE FUNCTION public.submit_booking(p_details jsonb) RETURNS text LANGUAGE sql SECURITY INVOKER SET search_path = public AS $$ SELECT private.submit_booking(p_details); $$;
+REVOKE ALL ON FUNCTION public.submit_enquiry(jsonb) FROM PUBLIC;
+REVOKE ALL ON FUNCTION public.submit_booking(jsonb) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.submit_enquiry(jsonb) TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.submit_booking(jsonb) TO anon, authenticated;
