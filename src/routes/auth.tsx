@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -32,6 +34,11 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    void supabase.auth.getSession().then(({ data }) => { if (data.session) void navigate({ to: "/dashboard" }); });
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => { if (event === "SIGNED_IN") void navigate({ to: "/dashboard" }); });
+    return () => sub.subscription.unsubscribe();
+  }, [navigate]);
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -108,6 +115,23 @@ function AuthPage() {
             </div>
             <Button type="submit" className="w-full" disabled={busy}>
               {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
+            </Button>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground"><span className="h-px flex-1 bg-border" />or<span className="h-px flex-1 bg-border" /></div>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" });
+                if (result.error) { toast.error("Google sign-in failed. Please try again."); setBusy(false); return; }
+                if (result.redirected) return;
+                setBusy(false);
+                void navigate({ to: "/dashboard" });
+              }}
+            >
+              Continue with Google
             </Button>
             <Button
               type="button"
