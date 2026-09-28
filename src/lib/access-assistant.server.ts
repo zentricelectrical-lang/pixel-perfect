@@ -14,7 +14,7 @@ export async function buildAccountSnapshot() {
   return data.users.map((u) => ({
     id: u.id,
     email: u.email,
-    name: u.user_metadata?.full_name ?? u.user_metadata?.name ?? null,
+    name: u.user_metadata?.['full_name'] ?? u.user_metadata?.['name'] ?? null,
     created_at: u.created_at,
     last_sign_in_at: u.last_sign_in_at ?? null,
     email_confirmed: !!u.email_confirmed_at,
@@ -27,7 +27,7 @@ export async function buildAccountSnapshot() {
 }
 
 export async function recommendAccessSteps(issue: string, snapshot: unknown) {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env['LOVABLE_API_KEY'];
   if (!apiKey) throw new Error("AI is not configured for this app.");
   const gw = createLovableAiGatewayRunIdFetch();
   const provider = createOpenAI({
