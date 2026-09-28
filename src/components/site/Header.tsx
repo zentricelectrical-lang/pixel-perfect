@@ -90,8 +90,9 @@ export function Header() {
                 <Menu />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[85vw] max-w-sm bg-surface">
-              <div className="mt-8 flex flex-col gap-1">
+            <SheetContent side="right" className="site-dark w-[85vw] max-w-sm overflow-y-auto bg-background text-foreground">
+              <Logo />
+              <div className="mt-6 flex flex-col gap-1">
                 {NAV.map((item) => (
                   <Link
                     key={item.to}
@@ -120,7 +121,7 @@ export function Header() {
                   </Button>
                 ) : null}
                 {tel ? (
-                  <Button asChild variant="ghost">
+                  <Button asChild variant="outline">
                     <a href={tel}>
                       <Phone /> Call now
                     </a>
