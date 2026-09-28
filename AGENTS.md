@@ -11,3 +11,4 @@
 
 - Keep customer, admin, and technician dashboards in separate role-gated routes and query through the signed-in browser client; RLS remains the authoritative data boundary.
 - Use a shared DashboardShell for the reference-style navigation and stat panels so dashboard layouts stay consistent.
+- Admin AI access assistant: owner-only createServerFn (requireSupabaseAuth + has_role owner) reads auth users via admin client inside handler and calls Lovable AI Gateway Responses (openai/gpt-6-astra, streamed, consumed server-side). Why: keeps account data and AI key server-side.
