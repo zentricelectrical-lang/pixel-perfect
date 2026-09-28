@@ -34,6 +34,11 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    void supabase.auth.getSession().then(({ data }) => { if (data.session) void navigate({ to: "/dashboard" }); });
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => { if (event === "SIGNED_IN") void navigate({ to: "/dashboard" }); });
+    return () => sub.subscription.unsubscribe();
+  }, [navigate]);
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
