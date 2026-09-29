@@ -172,7 +172,8 @@ function RequestQuotePage() {
                 <Button asChild className="mt-6"><Link to="/">Back to home</Link></Button>
               </div>
             ) : (
-              <form className="mt-8 space-y-5" onSubmit={(e) => { e.preventDefault(); void submit(); }}>
+              <p className="mt-4 rounded-md border border-gold/40 bg-gold/10 px-3 py-2 text-sm">No account needed — just fill in the form and we'll contact you.</p>
+              <form className="mt-6 space-y-5" onSubmit={(e) => { e.preventDefault(); void submit(); }}>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="space-y-2"><Label htmlFor="full_name">Full name *</Label><Input id="full_name" required value={form.full_name} onChange={(e) => set({ full_name: e.target.value })} placeholder="Your full name" /></div>
                   <div className="space-y-2"><Label htmlFor="phone">Phone number *</Label><Input id="phone" required inputMode="tel" value={form.phone} onChange={(e) => set({ phone: e.target.value })} placeholder="+254 …" /></div>
