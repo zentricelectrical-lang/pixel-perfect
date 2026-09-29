@@ -19,6 +19,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RequestQuoteRouteImport } from './routes/request-quote'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as TechnicianRouteImport } from './routes/technician'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -77,6 +78,11 @@ const RequestQuoteRoute = RequestQuoteRouteImport.update({
   path: '/request-quote',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewsRoute = ReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
   '/technician': typeof TechnicianRoute
   '/terms': typeof TermsRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
   '/technician': typeof TechnicianRoute
   '/terms': typeof TermsRoute
@@ -163,6 +171,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/request-quote': typeof RequestQuoteRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
   '/technician': typeof TechnicianRoute
   '/terms': typeof TermsRoute
@@ -184,6 +193,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/request-quote'
+    | '/reset-password'
     | '/reviews'
     | '/technician'
     | '/terms'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/request-quote'
+    | '/reset-password'
     | '/reviews'
     | '/technician'
     | '/terms'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/request-quote'
+    | '/reset-password'
     | '/reviews'
     | '/technician'
     | '/terms'
@@ -242,6 +254,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   PrivacyRoute: typeof PrivacyRoute
   RequestQuoteRoute: typeof RequestQuoteRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ReviewsRoute: typeof ReviewsRoute
   TechnicianRoute: typeof TechnicianRoute
   TermsRoute: typeof TermsRoute
@@ -323,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RequestQuoteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reviews': {
       id: '/reviews'
       path: '/reviews'
@@ -386,6 +406,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   PrivacyRoute: PrivacyRoute,
   RequestQuoteRoute: RequestQuoteRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ReviewsRoute: ReviewsRoute,
   TechnicianRoute: TechnicianRoute,
   TermsRoute: TermsRoute,
