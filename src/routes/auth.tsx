@@ -133,6 +133,24 @@ function AuthPage() {
             >
               Continue with Google
             </Button>
+            {mode === "signin" ? (
+              <Button
+                type="button"
+                variant="link"
+                className="w-full"
+                disabled={busy}
+                onClick={async () => {
+                  if (!email) { toast.error("Enter your email above first."); return; }
+                  setBusy(true);
+                  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
+                  setBusy(false);
+                  if (error) toast.error(error.message);
+                  else toast.success("Check your email for a link to set your password.");
+                }}
+              >
+                Forgot or set password?
+              </Button>
+            ) : null}
             <Button
               type="button"
               variant="link"
