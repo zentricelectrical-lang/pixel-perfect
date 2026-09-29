@@ -89,19 +89,23 @@ function Home() {
           className="absolute inset-0 h-full w-full object-cover object-[64%_center]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/95 to-navy/5" />
-        <div className="relative mx-auto max-w-6xl px-4 py-24 sm:py-32">
-          <h1 className="max-w-2xl text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 sm:py-28 lg:grid-cols-[1fr_360px]">
+          <div>
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-navy/60 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-gold">
+            <BadgeCheck className="h-4 w-4" /> No account needed to request a service
+          </span>
+          <h1 className="mt-5 max-w-2xl text-5xl font-bold leading-tight sm:text-6xl lg:text-7xl">
             Zentric<br />Electrical Services
           </h1>
           <p className="mt-4 text-lg font-medium sm:text-2xl">Professional Electrical Solutions. <span className="font-bold text-gold">Done Right.</span></p>
-          <p className="mt-7 max-w-xl text-base leading-relaxed text-navy-foreground/85 sm:text-lg">
-            Reliable electrical installation, repairs, fault finding, solar, automation, water pump
-            control and commercial electrical work — carried out safely, documented properly and
-            quoted transparently.
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-navy-foreground/85 sm:text-lg">
+            Installation, repairs, fault finding, solar, automation, water pump control and
+            commercial electrical work — carried out safely, documented properly and quoted
+            transparently.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild variant="gold" size="lg">
-              <Link to="/request-quote">Request a quote</Link>
+              <Link to="/request-quote">Request a quote <ArrowRight /></Link>
             </Button>
             {wa ? (
                <Button asChild variant="whatsapp" size="lg">
@@ -121,6 +125,33 @@ function Home() {
                 <Link to="/contact">Contact us</Link>
               </Button>
             )}
+          </div>
+          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-navy-foreground/85">
+            <li className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-gold" /> Safety-tested work</li>
+            <li className="flex items-center gap-2"><FileCheck2 className="h-4 w-4 text-gold" /> Itemised quotes</li>
+            <li className="flex items-center gap-2"><LifeBuoy className="h-4 w-4 text-gold" /> After-service support</li>
+          </ul>
+          </div>
+
+          <div className="rounded-lg border border-border bg-navy/85 p-6 shadow-2xl backdrop-blur">
+            <p className="eyebrow text-gold">Quick request</p>
+            <h2 className="mt-1 text-2xl font-semibold">What do you need help with?</h2>
+            <p className="mt-1 text-sm text-navy-foreground/75">Pick a service — no sign-up, just your name, phone and location.</p>
+            <div className="mt-4 grid gap-2">
+              {(services ?? []).slice(0, 5).map((s) => (
+                <Link
+                  key={s.id}
+                  to="/request-quote"
+                  search={{ service: s.slug }}
+                  className="flex items-center justify-between rounded-md border border-border px-3 py-2.5 text-sm font-medium transition-colors hover:border-gold hover:text-gold"
+                >
+                  {s.name} <ArrowRight className="h-4 w-4" />
+                </Link>
+              ))}
+            </div>
+            <Button asChild variant="outline" className="mt-4 w-full">
+              <Link to="/book">Book a site visit</Link>
+            </Button>
           </div>
         </div>
       </section>
