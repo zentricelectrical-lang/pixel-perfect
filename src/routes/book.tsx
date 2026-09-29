@@ -113,6 +113,7 @@ function BookPage() {
             </div>
           ) : (
             <form onSubmit={submit} className="space-y-4 rounded-md border border-border bg-card p-5 sm:p-6">
+            <p className="rounded-md border border-gold/40 bg-gold/10 px-3 py-2 text-sm">No account needed — book with just your contact details.</p>
               <div className="space-y-2">
                 <Label htmlFor="b-name">Full name *</Label>
                 <Input id="b-name" value={fullName} onChange={(e) => setFullName(e.target.value)} />
