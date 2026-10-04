@@ -203,6 +203,7 @@ export type Database = {
       }
       customers: {
         Row: {
+          company_name: string | null
           created_at: string
           customer_number: string
           email: string | null
@@ -213,12 +214,14 @@ export type Database = {
           notes: string | null
           phone: string | null
           profile_id: string | null
+          site_address: string | null
           updated_at: string
           whatsapp: string | null
         }
         Insert: {
+          company_name?: string | null
           created_at?: string
-          customer_number: string
+          customer_number?: string
           email?: string | null
           full_name: string
           id?: string
@@ -227,10 +230,12 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           profile_id?: string | null
+          site_address?: string | null
           updated_at?: string
           whatsapp?: string | null
         }
         Update: {
+          company_name?: string | null
           created_at?: string
           customer_number?: string
           email?: string | null
@@ -241,6 +246,7 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           profile_id?: string | null
+          site_address?: string | null
           updated_at?: string
           whatsapp?: string | null
         }
@@ -261,6 +267,36 @@ export type Database = {
           current?: number
           prefix?: string
           year?: number
+        }
+        Relationships: []
+      }
+      document_versions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          entity: string
+          entity_id: string
+          id: string
+          snapshot: Json
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          entity: string
+          entity_id: string
+          id?: string
+          snapshot: Json
+          version: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          entity?: string
+          entity_id?: string
+          id?: string
+          snapshot?: Json
+          version?: number
         }
         Relationships: []
       }
@@ -440,6 +476,69 @@ export type Database = {
           },
         ]
       }
+      field_documents: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          created_by: string | null
+          customer_id: string | null
+          data: Json
+          doc_type: string
+          id: string
+          is_demo: boolean
+          job_id: string
+          reference: string | null
+          status: string
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          data?: Json
+          doc_type: string
+          id?: string
+          is_demo?: boolean
+          job_id: string
+          reference?: string | null
+          status?: string
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          data?: Json
+          doc_type?: string
+          id?: string
+          is_demo?: boolean
+          job_id?: string
+          reference?: string | null
+          status?: string
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "field_documents_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "field_documents_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invoice_items: {
         Row: {
           description: string
@@ -481,18 +580,23 @@ export type Database = {
       invoices: {
         Row: {
           amount_paid: number
+          archived_at: string | null
           created_at: string
           customer_id: string
+          description: string | null
           discount: number
           due_date: string | null
           id: string
+          is_demo: boolean
           issue_date: string
           job_id: string | null
           notes: string | null
+          payment_instructions: string | null
           quote_id: string | null
           reference: string
           status: string
           subtotal: number
+          tax_amount: number
           tax_rate: number
           terms: string | null
           total: number
@@ -500,18 +604,23 @@ export type Database = {
         }
         Insert: {
           amount_paid?: number
+          archived_at?: string | null
           created_at?: string
           customer_id: string
+          description?: string | null
           discount?: number
           due_date?: string | null
           id?: string
+          is_demo?: boolean
           issue_date?: string
           job_id?: string | null
           notes?: string | null
+          payment_instructions?: string | null
           quote_id?: string | null
           reference?: string
           status?: string
           subtotal?: number
+          tax_amount?: number
           tax_rate?: number
           terms?: string | null
           total?: number
@@ -519,18 +628,23 @@ export type Database = {
         }
         Update: {
           amount_paid?: number
+          archived_at?: string | null
           created_at?: string
           customer_id?: string
+          description?: string | null
           discount?: number
           due_date?: string | null
           id?: string
+          is_demo?: boolean
           issue_date?: string
           job_id?: string | null
           notes?: string | null
+          payment_instructions?: string | null
           quote_id?: string | null
           reference?: string
           status?: string
           subtotal?: number
+          tax_amount?: number
           tax_rate?: number
           terms?: string | null
           total?: number
@@ -566,7 +680,12 @@ export type Database = {
           id: string
           job_id: string
           name: string
+          notes: string | null
+          qty_purchased: number
+          qty_used: number
           quantity: number
+          specification: string | null
+          supplier: string | null
           unit: string | null
           unit_cost: number
         }
@@ -575,7 +694,12 @@ export type Database = {
           id?: string
           job_id: string
           name: string
+          notes?: string | null
+          qty_purchased?: number
+          qty_used?: number
           quantity?: number
+          specification?: string | null
+          supplier?: string | null
           unit?: string | null
           unit_cost?: number
         }
@@ -584,7 +708,12 @@ export type Database = {
           id?: string
           job_id?: string
           name?: string
+          notes?: string | null
+          qty_purchased?: number
+          qty_used?: number
           quantity?: number
+          specification?: string | null
+          supplier?: string | null
           unit?: string | null
           unit_cost?: number
         }
@@ -673,6 +802,7 @@ export type Database = {
       }
       jobs: {
         Row: {
+          archived_at: string | null
           booking_id: string | null
           completed_at: string | null
           created_at: string
@@ -682,10 +812,12 @@ export type Database = {
           enquiry_id: string | null
           expected_completion: string | null
           id: string
+          is_demo: boolean
           location: string | null
           notes: string | null
           reference: string
           service_id: string | null
+          site_address: string | null
           start_date: string | null
           status: string
           technician_id: string | null
@@ -694,6 +826,7 @@ export type Database = {
           work_summary: string | null
         }
         Insert: {
+          archived_at?: string | null
           booking_id?: string | null
           completed_at?: string | null
           created_at?: string
@@ -703,10 +836,12 @@ export type Database = {
           enquiry_id?: string | null
           expected_completion?: string | null
           id?: string
+          is_demo?: boolean
           location?: string | null
           notes?: string | null
           reference?: string
           service_id?: string | null
+          site_address?: string | null
           start_date?: string | null
           status?: string
           technician_id?: string | null
@@ -715,6 +850,7 @@ export type Database = {
           work_summary?: string | null
         }
         Update: {
+          archived_at?: string | null
           booking_id?: string | null
           completed_at?: string | null
           created_at?: string
@@ -724,10 +860,12 @@ export type Database = {
           enquiry_id?: string | null
           expected_completion?: string | null
           id?: string
+          is_demo?: boolean
           location?: string | null
           notes?: string | null
           reference?: string
           service_id?: string | null
+          site_address?: string | null
           start_date?: string | null
           status?: string
           technician_id?: string | null
@@ -814,6 +952,8 @@ export type Database = {
           external_reference: string | null
           id: string
           invoice_id: string | null
+          is_demo: boolean
+          job_id: string | null
           method: string
           notes: string | null
           paid_at: string | null
@@ -828,6 +968,8 @@ export type Database = {
           external_reference?: string | null
           id?: string
           invoice_id?: string | null
+          is_demo?: boolean
+          job_id?: string | null
           method?: string
           notes?: string | null
           paid_at?: string | null
@@ -842,6 +984,8 @@ export type Database = {
           external_reference?: string | null
           id?: string
           invoice_id?: string | null
+          is_demo?: boolean
+          job_id?: string | null
           method?: string
           notes?: string | null
           paid_at?: string | null
@@ -862,6 +1006,13 @@ export type Database = {
             columns: ["invoice_id"]
             isOneToOne: false
             referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
             referencedColumns: ["id"]
           },
         ]
@@ -989,6 +1140,7 @@ export type Database = {
         Row: {
           description: string
           id: string
+          item_type: string
           quantity: number
           quote_id: string
           sort_order: number
@@ -998,6 +1150,7 @@ export type Database = {
         Insert: {
           description: string
           id?: string
+          item_type?: string
           quantity?: number
           quote_id: string
           sort_order?: number
@@ -1007,6 +1160,7 @@ export type Database = {
         Update: {
           description?: string
           id?: string
+          item_type?: string
           quantity?: number
           quote_id?: string
           sort_order?: number
@@ -1025,18 +1179,30 @@ export type Database = {
       }
       quotes: {
         Row: {
+          approval_signature: string | null
+          approved_by_name: string | null
+          archived_at: string | null
+          assumptions: string | null
           created_at: string
           customer_id: string
+          deposit: number
           description: string | null
           discount: number
           enquiry_id: string | null
+          exclusions: string | null
           id: string
+          is_demo: boolean
           job_id: string | null
           labour_cost: number
+          notes: string | null
           other_charges: number
+          parent_quote_id: string | null
           reference: string
           responded_at: string | null
+          scope: string | null
           status: string
+          subtotal: number
+          tax_amount: number
           tax_rate: number
           terms: string | null
           title: string
@@ -1044,20 +1210,33 @@ export type Database = {
           transport_cost: number
           updated_at: string
           valid_until: string | null
+          version: number
         }
         Insert: {
+          approval_signature?: string | null
+          approved_by_name?: string | null
+          archived_at?: string | null
+          assumptions?: string | null
           created_at?: string
           customer_id: string
+          deposit?: number
           description?: string | null
           discount?: number
           enquiry_id?: string | null
+          exclusions?: string | null
           id?: string
+          is_demo?: boolean
           job_id?: string | null
           labour_cost?: number
+          notes?: string | null
           other_charges?: number
+          parent_quote_id?: string | null
           reference?: string
           responded_at?: string | null
+          scope?: string | null
           status?: string
+          subtotal?: number
+          tax_amount?: number
           tax_rate?: number
           terms?: string | null
           title: string
@@ -1065,20 +1244,33 @@ export type Database = {
           transport_cost?: number
           updated_at?: string
           valid_until?: string | null
+          version?: number
         }
         Update: {
+          approval_signature?: string | null
+          approved_by_name?: string | null
+          archived_at?: string | null
+          assumptions?: string | null
           created_at?: string
           customer_id?: string
+          deposit?: number
           description?: string | null
           discount?: number
           enquiry_id?: string | null
+          exclusions?: string | null
           id?: string
+          is_demo?: boolean
           job_id?: string | null
           labour_cost?: number
+          notes?: string | null
           other_charges?: number
+          parent_quote_id?: string | null
           reference?: string
           responded_at?: string | null
+          scope?: string | null
           status?: string
+          subtotal?: number
+          tax_amount?: number
           tax_rate?: number
           terms?: string | null
           title?: string
@@ -1086,6 +1278,7 @@ export type Database = {
           transport_cost?: number
           updated_at?: string
           valid_until?: string | null
+          version?: number
         }
         Relationships: [
           {
@@ -1109,33 +1302,52 @@ export type Database = {
             referencedRelation: "jobs"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "quotes_parent_quote_id_fkey"
+            columns: ["parent_quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
         ]
       }
       receipts: {
         Row: {
           amount: number
+          balance_after: number | null
           customer_id: string
+          external_reference: string | null
           id: string
           invoice_id: string | null
+          is_demo: boolean
           issued_at: string
+          method: string | null
           payment_id: string
           reference: string
         }
         Insert: {
           amount: number
+          balance_after?: number | null
           customer_id: string
+          external_reference?: string | null
           id?: string
           invoice_id?: string | null
+          is_demo?: boolean
           issued_at?: string
+          method?: string | null
           payment_id: string
           reference?: string
         }
         Update: {
           amount?: number
+          balance_after?: number | null
           customer_id?: string
+          external_reference?: string | null
           id?: string
           invoice_id?: string | null
+          is_demo?: boolean
           issued_at?: string
+          method?: string | null
           payment_id?: string
           reference?: string
         }
@@ -1419,11 +1631,18 @@ export type Database = {
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       next_doc_number: { Args: { _prefix: string }; Returns: string }
+      remove_demo_data: { Args: never; Returns: number }
       submit_booking: { Args: { p_details: Json }; Returns: string }
       submit_enquiry: { Args: { p_details: Json }; Returns: string }
     }
     Enums: {
-      app_role: "owner" | "admin" | "technician" | "customer"
+      app_role:
+        | "owner"
+        | "admin"
+        | "technician"
+        | "customer"
+        | "manager"
+        | "finance"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1551,7 +1770,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["owner", "admin", "technician", "customer"],
+      app_role: [
+        "owner",
+        "admin",
+        "technician",
+        "customer",
+        "manager",
+        "finance",
+      ],
     },
   },
 } as const
