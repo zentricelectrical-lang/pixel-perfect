@@ -8,7 +8,7 @@ import { DashboardShell, useDashboardAccess, Stat, Empty, money, day } from "@/c
 import { AccessAssistant } from "@/components/dashboard/AccessAssistant";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/admin")({ head: () => ({ meta: [{ title: "Business Dashboard | Zentric Electrical Services" }, { name: "description", content: "Manage Zentric customer requests, bookings, jobs, quotes and invoices." }, { property: "og:title", content: "Business Dashboard | Zentric" }, { property: "og:description", content: "Zentric business operations." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }), component: AdminDashboard });
+export const Route = createFileRoute("/admin/")({ head: () => ({ meta: [{ title: "Business Dashboard | Zentric Electrical Services" }, { name: "description", content: "Manage Zentric customer requests, bookings, jobs, quotes and invoices." }, { property: "og:title", content: "Business Dashboard | Zentric" }, { property: "og:description", content: "Zentric business operations." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] }), component: AdminDashboard });
 
 const PIE = ["var(--primary)", "var(--gold)", "var(--whatsapp)", "var(--navy)", "var(--muted-foreground)", "var(--destructive)", "var(--accent-foreground)"];
 
