@@ -29,6 +29,7 @@ import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as AdminCustomersIndexRouteImport } from './routes/admin.customers.index'
 import { Route as AdminCustomersIdRouteImport } from './routes/admin.customers.$id'
+import { Route as AdminJobsIndexRouteImport } from './routes/admin.jobs.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -130,6 +131,11 @@ const AdminCustomersIdRoute = AdminCustomersIdRouteImport.update({
   path: '/admin/customers/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminJobsIndexRoute = AdminJobsIndexRouteImport.update({
+  id: '/admin/jobs/',
+  path: '/admin/jobs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/services/': typeof ServicesIndexRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers/': typeof AdminCustomersIndexRoute
+  '/admin/jobs/': typeof AdminJobsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -174,6 +181,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesIndexRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers': typeof AdminCustomersIndexRoute
+  '/admin/jobs': typeof AdminJobsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/services/': typeof ServicesIndexRoute
   '/admin/customers/$id': typeof AdminCustomersIdRoute
   '/admin/customers/': typeof AdminCustomersIndexRoute
+  '/admin/jobs/': typeof AdminJobsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/services/'
     | '/admin/customers/$id'
     | '/admin/customers/'
+    | '/admin/jobs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/admin/customers/$id'
     | '/admin/customers'
+    | '/admin/jobs'
   id:
     | '__root__'
     | '/'
@@ -265,6 +276,7 @@ export interface FileRouteTypes {
     | '/services/'
     | '/admin/customers/$id'
     | '/admin/customers/'
+    | '/admin/jobs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -288,6 +300,7 @@ export interface RootRouteChildren {
   ServicesIndexRoute: typeof ServicesIndexRoute
   AdminCustomersIdRoute: typeof AdminCustomersIdRoute
   AdminCustomersIndexRoute: typeof AdminCustomersIndexRoute
+  AdminJobsIndexRoute: typeof AdminJobsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -432,6 +445,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCustomersIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/jobs/': {
+      id: '/admin/jobs/'
+      path: '/admin/jobs'
+      fullPath: '/admin/jobs/'
+      preLoaderRoute: typeof AdminJobsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -456,6 +476,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesIndexRoute: ServicesIndexRoute,
   AdminCustomersIdRoute: AdminCustomersIdRoute,
   AdminCustomersIndexRoute: AdminCustomersIndexRoute,
+  AdminJobsIndexRoute: AdminJobsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
